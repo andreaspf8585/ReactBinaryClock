@@ -3,16 +3,16 @@ import redDot0 from "./redDot0.png";
 import redDot1 from "./redDot1.png";
 
 export default function BinaryClock() {
-  const [hours, setHours] = useState(0);
-  const [minutes, setMinutes] = useState(0);
-  const [seconds, setSeconds] = useState(0);
+  const [hours, setHours] = useState("");
+  const [minutes, setMinutes] = useState("");
+  const [seconds, setSeconds] = useState("");
   const [miliseconds, setMiliseconds] = useState(0);
 
   useEffect(() => {
     setInterval(() => {
-      let hours = new Date().getHours();
-      let minutes = new Date().getMinutes();
-      let seconds = new Date().getSeconds();
+      let hours = String(new Date().getHours());
+      let minutes = String(new Date().getMinutes());
+      let seconds = String(new Date().getSeconds());
       let milis = new Date().getMilliseconds();
       setHours(hours);
       setMinutes(minutes);
@@ -20,6 +20,33 @@ export default function BinaryClock() {
       setMiliseconds(milis);
     }, 100);
   }, []);
+
+  const FullBinString = (text) => {
+    let stringOutput = "";
+    switch (text.length) {
+      case 1:
+        stringOutput = "00000" + text;
+        break;
+      case 2:
+        stringOutput = "0000" + text;
+        break;
+      case 3:
+        stringOutput = "000" + text;
+        break;
+      case 4:
+        stringOutput = "00" + text;
+        break;
+      case 5:
+        stringOutput = "0" + text;
+        break;
+      case 6:
+        stringOutput = text;
+        break;
+      default:
+        break;
+    }
+    return stringOutput;
+  };
 
   return (
     <div
@@ -43,7 +70,10 @@ export default function BinaryClock() {
           margin: "10px",
         }}
       >
-        {hours} : {minutes} : {seconds} : {parseInt(miliseconds / 100)}
+        {hours.length === 1 ? "0" + hours : hours} :{" "}
+        {minutes.length === 1 ? "0" + minutes : minutes} :{" "}
+        {seconds.length === 1 ? "0" + seconds : seconds} :{" "}
+        {parseInt(miliseconds / 100)}
       </h1>
       <div>
         <table
@@ -93,9 +123,9 @@ export default function BinaryClock() {
           </thead>
           <tbody>
             <tr>
-              <td>{Number(hours).toString(2)}</td>
-              <td>{Number(minutes).toString(2)}</td>
-              <td>{Number(seconds).toString(2)}</td>
+              <td>{FullBinString(Number(hours).toString(2))}</td>
+              <td>{FullBinString(Number(minutes).toString(2))}</td>
+              <td>{FullBinString(Number(seconds).toString(2))}</td>
             </tr>
 
             <tr>
@@ -108,8 +138,7 @@ export default function BinaryClock() {
                   backgroundColor: "lightGray",
                 }}
               >
-                {Number(hours)
-                  .toString(2)
+                {FullBinString(Number(hours).toString(2))
                   .split("")
                   .map((item, index) => {
                     return item === "0" ? (
@@ -138,8 +167,7 @@ export default function BinaryClock() {
                   backgroundColor: "lightGray",
                 }}
               >
-                {Number(minutes)
-                  .toString(2)
+                {FullBinString(Number(minutes).toString(2))
                   .split("")
                   .map((item, index) => {
                     return item === "0" ? (
@@ -168,8 +196,7 @@ export default function BinaryClock() {
                   backgroundColor: "lightGray",
                 }}
               >
-                {Number(seconds)
-                  .toString(2)
+                {FullBinString(Number(seconds).toString(2))
                   .split("")
                   .map((item, index) => {
                     return item === "0" ? (
